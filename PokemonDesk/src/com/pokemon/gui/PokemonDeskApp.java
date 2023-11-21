@@ -154,29 +154,47 @@ public class PokemonDeskApp {
 	}
 
 	private void editPokemon() {
-	    String name = JOptionPane.showInputDialog("Enter the name of the Pokemon to edit:");
-	    if (name != null && !name.isEmpty()) {
-	        Optional<Pokemon> pokemonOptional = pokemonList.stream()
-	                .filter(pokemon -> pokemon.getName().equalsIgnoreCase(name))
-	                .findFirst();
+		 String name = JOptionPane.showInputDialog("Enter the name of the Pokemon to edit:");
+		    if (name != null && !name.isEmpty()) {
+		        Optional<Pokemon> pokemonOptional = pokemonList.stream()
+		                .filter(pokemon -> pokemon.getName().equalsIgnoreCase(name))
+		                .findFirst();
 
-	        if (pokemonOptional.isPresent()) {
-	            Pokemon pokemonToEdit = pokemonOptional.get();
+		        if (pokemonOptional.isPresent()) {
+		            Pokemon pokemonToEdit = pokemonOptional.get();
 
-	            // For simplicity, let's allow editing the name only
-	            String editedName = JOptionPane.showInputDialog("Enter the new name:", pokemonToEdit.getName());
-	            if (editedName != null && !editedName.isEmpty()) {
-	                pokemonToEdit.setName(editedName);
+		            // Prompt for the new values of each attribute
+		            String editedName = JOptionPane.showInputDialog("Enter the new name:", pokemonToEdit.getName());
+		            String editedType = JOptionPane.showInputDialog("Enter the new type:", pokemonToEdit.getType());
+		            int editedLevel = Integer.parseInt(JOptionPane.showInputDialog("Enter the new level:", pokemonToEdit.getLevel()));
+		            int editedExperience = Integer.parseInt(JOptionPane.showInputDialog("Enter the new experience:", pokemonToEdit.getExperience()));
 
-	                // Update the display and save to file
-	                displayPokemon();
-	                FileHandler.writeToFile(pokemonList);
-	            }
-	        } else {
-	            JOptionPane.showMessageDialog(null, "No Pokemon found with the name: " + name, "Pokemon not found", JOptionPane.INFORMATION_MESSAGE);
-	        }
-	    }
-	}
+		            // Update the Pokemon with the new values
+		            pokemonToEdit.setName(editedName);
+		            pokemonToEdit.setType(editedType);
+		            pokemonToEdit.setLevel(editedLevel);
+		            pokemonToEdit.setExperience(editedExperience);
+
+		            // Check the type and update subtype values accordingly
+		            if (pokemonToEdit instanceof FirePokemon) {
+		                ((FirePokemon) pokemonToEdit).setAbility(JOptionPane.showInputDialog("Enter the new ability:", ((FirePokemon) pokemonToEdit).getAbility()));
+		                ((FirePokemon) pokemonToEdit).setWeakness(JOptionPane.showInputDialog("Enter the new weakness:", ((FirePokemon) pokemonToEdit).getWeakness()));
+		            } else if (pokemonToEdit instanceof GrassPokemon) {
+		                ((GrassPokemon) pokemonToEdit).setNature(JOptionPane.showInputDialog("Enter the new nature:", ((GrassPokemon) pokemonToEdit).getNature()));
+		                ((GrassPokemon) pokemonToEdit).setHabitat(JOptionPane.showInputDialog("Enter the new habitat:", ((GrassPokemon) pokemonToEdit).getHabitat()));
+		            } else if (pokemonToEdit instanceof WaterPokemon) {
+		                ((WaterPokemon) pokemonToEdit).setAbility(JOptionPane.showInputDialog("Enter the new ability:", ((WaterPokemon) pokemonToEdit).getAbility()));
+		                ((WaterPokemon) pokemonToEdit).setHabitat(JOptionPane.showInputDialog("Enter the new habitat:", ((WaterPokemon) pokemonToEdit).getHabitat()));
+		            }
+
+		            // Update the display and save to file
+		            displayPokemon();
+		            FileHandler.writeToFile(pokemonList);
+		        } else {
+		            JOptionPane.showMessageDialog(null, "No Pokemon found with the name: " + name, "Pokemon not found", JOptionPane.INFORMATION_MESSAGE);
+		        }
+		    }
+		}
 
 	private void deletePokemon() {
 	    String name = JOptionPane.showInputDialog("Enter the name of the Pokemon to delete:");
