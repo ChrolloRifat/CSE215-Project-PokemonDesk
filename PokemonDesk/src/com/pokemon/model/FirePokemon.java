@@ -13,10 +13,7 @@ public class FirePokemon extends Pokemon {
         this.weakness = weakness;
     }
 
- //   @Override
-//    public void attack() {
-//        System.out.println("Uses Flamethrower!");
-//    }
+
 
     public String getAbility() {
         return ability;
@@ -32,6 +29,26 @@ public class FirePokemon extends Pokemon {
 
     public void setWeakness(String weakness) {
         this.weakness = weakness;
+    }
+    
+    @Override
+    public void attack() {
+        System.out.println("Fire Pokemon " + getName() + " uses Flamethrower!");
+    }
+    
+    // Overloaded attack method with a different signature
+    public void attack(String moveName) {
+        System.out.println(getName() + " uses " + moveName + "!");
+    }
+
+    // Overloaded attack method with different parameters
+    public void attack(String moveName, int power) {
+        System.out.println(getName() + " uses " + moveName + " with power " + power + "!");
+    }
+
+    @Override
+    public void heal() {
+        System.out.println("Fire Pokemon " + getName() + " uses Fire-ball Heal!");
     }
 
     @Override

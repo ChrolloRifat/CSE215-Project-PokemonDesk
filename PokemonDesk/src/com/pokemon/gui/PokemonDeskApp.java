@@ -1,13 +1,12 @@
 package com.pokemon.gui;
 
-
-
 import javax.swing.*;
 
 import com.pokemon.fileutil.FileHandler;
 import com.pokemon.model.FirePokemon;
 import com.pokemon.model.GrassPokemon;
 import com.pokemon.model.Pokemon;
+import com.pokemon.model.PokemonFactory;
 import com.pokemon.model.WaterPokemon;
 
 import java.awt.*;
@@ -27,45 +26,53 @@ public class PokemonDeskApp {
  }
 
  private void createAndShowGUI() {
-	   JFrame frame = new JFrame("Pokemon Desk");
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 JFrame frame = new JFrame("Pokemon Desk");
+     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	    displayArea = new JTextArea(10, 30);
-	    displayArea.setEditable(false);
+     displayArea = new JTextArea(10, 30);
+     displayArea.setEditable(false);
 
-	    JButton displayButton = new JButton("Display Pokemon");
-	    displayButton.addActionListener(e -> displayPokemon());
+     JButton displayButton = new JButton("Display Pokemon");
+     displayButton.addActionListener(e -> displayPokemon());
 
-	    JButton addButton = new JButton("Add Pokemon");
-	    addButton.addActionListener(e -> addPokemon());
+     JButton addButton = new JButton("Add Pokemon");
+     addButton.addActionListener(e -> addPokemon());
 
-	    JButton searchButton = new JButton("Search Pokemon");
-	    searchButton.addActionListener(e -> searchPokemon());
+     JButton searchButton = new JButton("Search Pokemon");
+     searchButton.addActionListener(e -> searchPokemon());
 
-	    JButton editButton = new JButton("Edit Pokemon");
-	    editButton.addActionListener(e -> editPokemon());
+     JButton editButton = new JButton("Edit Pokemon");
+     editButton.addActionListener(e -> editPokemon());
 
-	    JButton deleteButton = new JButton("Delete Pokemon");
-	    deleteButton.addActionListener(e -> deletePokemon());
+     JButton deleteButton = new JButton("Delete Pokemon");
+     deleteButton.addActionListener(e -> deletePokemon());
 
-	    JPanel panel = new JPanel();
-	    panel.setLayout(new BorderLayout());
-	    panel.add(new JScrollPane(displayArea), BorderLayout.CENTER);
+     JButton attackButton = new JButton("Attack");
+     attackButton.addActionListener(e -> performAction("Attack"));
 
-	    // Add buttons to a separate panel to ensure they are all visible
-	    JPanel buttonPanel = new JPanel();
-	    buttonPanel.add(displayButton);
-	    buttonPanel.add(addButton);
-	    buttonPanel.add(searchButton);
-	    buttonPanel.add(editButton);
-	    buttonPanel.add(deleteButton);
+     JButton healButton = new JButton("Heal");
+     healButton.addActionListener(e -> performAction("Heal"));
 
-	    panel.add(buttonPanel, BorderLayout.SOUTH);
+     JPanel panel = new JPanel();
+     panel.setLayout(new BorderLayout());
+     panel.add(new JScrollPane(displayArea), BorderLayout.CENTER);
 
-	    frame.getContentPane().add(panel);
-	    frame.pack();
-	    frame.setLocationRelativeTo(null);
-	    frame.setVisible(true);
+     // Add buttons to a separate panel to ensure they are all visible
+     JPanel buttonPanel = new JPanel();
+     buttonPanel.add(displayButton);
+     buttonPanel.add(addButton);
+     buttonPanel.add(searchButton);
+     buttonPanel.add(editButton);
+     buttonPanel.add(deleteButton);
+     buttonPanel.add(attackButton);
+     buttonPanel.add(healButton);
+
+     panel.add(buttonPanel, BorderLayout.SOUTH);
+
+     frame.getContentPane().add(panel);
+     frame.pack();
+     frame.setLocationRelativeTo(null);
+     frame.setVisible(true);
 
      // Load existing data from file
      pokemonList = FileHandler.readFromFile();
@@ -153,48 +160,41 @@ public class PokemonDeskApp {
 	    }
 	}
 
-	private void editPokemon() {
-		 String name = JOptionPane.showInputDialog("Enter the name of the Pokemon to edit:");
-		    if (name != null && !name.isEmpty()) {
-		        Optional<Pokemon> pokemonOptional = pokemonList.stream()
-		                .filter(pokemon -> pokemon.getName().equalsIgnoreCase(name))
-		                .findFirst();
+ private void editPokemon() {
+	    String name = JOptionPane.showInputDialog("Enter the name of the Pokemon to edit:");
+	    if (name != null && !name.isEmpty()) {
+	        Optional<Pokemon> pokemonOptional = pokemonList.stream()
+	                .filter(pokemon -> pokemon.getName().equalsIgnoreCase(name))
+	                .findFirst();
 
-		        if (pokemonOptional.isPresent()) {
-		            Pokemon pokemonToEdit = pokemonOptional.get();
+	        if (pokemonOptional.isPresent()) {
+	            Pokemon oldPokemon = pokemonOptional.get();
 
-		            // Prompt for the new values of each attribute
-		            String editedName = JOptionPane.showInputDialog("Enter the new name:", pokemonToEdit.getName());
-		            String editedType = JOptionPane.showInputDialog("Enter the new type:", pokemonToEdit.getType());
-		            int editedLevel = Integer.parseInt(JOptionPane.showInputDialog("Enter the new level:", pokemonToEdit.getLevel()));
-		            int editedExperience = Integer.parseInt(JOptionPane.showInputDialog("Enter the new experience:", pokemonToEdit.getExperience()));
+	            // Prompt for the new values of each attribute
+	            String editedName = JOptionPane.showInputDialog("Enter the new name:", oldPokemon.getName());
+	            String editedType = JOptionPane.showInputDialog("Enter the new type:", oldPokemon.getType());
+	            int editedLevel = Integer.parseInt(JOptionPane.showInputDialog("Enter the new level:", oldPokemon.getLevel()));
+	            int editedExperience = Integer.parseInt(JOptionPane.showInputDialog("Enter the new experience:", oldPokemon.getExperience()));
+	            String editedSubtype1 = JOptionPane.showInputDialog("Enter the subtype I of the Pokemon (Ability or Nature):");
+	            String editedSubtype2 = JOptionPane.showInputDialog("Enter the subtype II of the Pokemon(Habitat or Weakness):");
 
-		            // Update the Pokemon with the new values
-		            pokemonToEdit.setName(editedName);
-		            pokemonToEdit.setType(editedType);
-		            pokemonToEdit.setLevel(editedLevel);
-		            pokemonToEdit.setExperience(editedExperience);
+	            // Create a new Pokemon instance based on the updated type
+	            Pokemon newPokemon = PokemonFactory.createPokemon(editedName, editedType, editedLevel, editedExperience, editedSubtype1, editedSubtype2);
 
-		            // Check the type and update subtype values accordingly
-		            if (pokemonToEdit instanceof FirePokemon) {
-		                ((FirePokemon) pokemonToEdit).setAbility(JOptionPane.showInputDialog("Enter the new ability:", ((FirePokemon) pokemonToEdit).getAbility()));
-		                ((FirePokemon) pokemonToEdit).setWeakness(JOptionPane.showInputDialog("Enter the new weakness:", ((FirePokemon) pokemonToEdit).getWeakness()));
-		            } else if (pokemonToEdit instanceof GrassPokemon) {
-		                ((GrassPokemon) pokemonToEdit).setNature(JOptionPane.showInputDialog("Enter the new nature:", ((GrassPokemon) pokemonToEdit).getNature()));
-		                ((GrassPokemon) pokemonToEdit).setHabitat(JOptionPane.showInputDialog("Enter the new habitat:", ((GrassPokemon) pokemonToEdit).getHabitat()));
-		            } else if (pokemonToEdit instanceof WaterPokemon) {
-		                ((WaterPokemon) pokemonToEdit).setAbility(JOptionPane.showInputDialog("Enter the new ability:", ((WaterPokemon) pokemonToEdit).getAbility()));
-		                ((WaterPokemon) pokemonToEdit).setHabitat(JOptionPane.showInputDialog("Enter the new habitat:", ((WaterPokemon) pokemonToEdit).getHabitat()));
-		            }
+	            // Replace the old Pokemon with the new one in the list
+	            int index = pokemonList.indexOf(oldPokemon);
+	            if (index != -1) {
+	                pokemonList.set(index, newPokemon);
+	            }
 
-		            // Update the display and save to file
-		            displayPokemon();
-		            FileHandler.writeToFile(pokemonList);
-		        } else {
-		            JOptionPane.showMessageDialog(null, "No Pokemon found with the name: " + name, "Pokemon not found", JOptionPane.INFORMATION_MESSAGE);
-		        }
-		    }
-		}
+	            // Update the display and save to file
+	            displayPokemon();
+	            FileHandler.writeToFile(pokemonList);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "No Pokemon found with the name: " + name, "Pokemon not found", JOptionPane.INFORMATION_MESSAGE);
+	        }
+	    }
+	}
 
 	private void deletePokemon() {
 	    String name = JOptionPane.showInputDialog("Enter the name of the Pokemon to delete:");
@@ -222,4 +222,77 @@ public class PokemonDeskApp {
 	        }
 	    }
 	}
+	private void performAction(String action) {
+	    String name = JOptionPane.showInputDialog("Enter the name of the Pokemon to " + action + ":");
+	    if (name != null && !name.isEmpty()) {
+	        Optional<Pokemon> pokemonOptional = pokemonList.stream()
+	                .filter(pokemon -> pokemon.getName().equalsIgnoreCase(name))
+	                .findFirst();
+
+	        if (pokemonOptional.isPresent()) {
+	            Pokemon pokemonToAct = pokemonOptional.get();
+
+	            if (action.equals("Attack")) {
+	                // Prompt the user for attack details
+	                String moveName = JOptionPane.showInputDialog("Enter the name of the move:");
+	                String powerInput = JOptionPane.showInputDialog("Enter the power of the move (leave blank for default):");
+
+	                int power;
+	                if (powerInput != null && !powerInput.isEmpty()) {
+	                    // Use the provided power
+	                    power = Integer.parseInt(powerInput);
+	                } else {
+	                    // Use the default power
+	                    power = -1; // or any default value you want
+	                }
+
+	                // Check the type and call the appropriate overloaded attack method
+	                if (pokemonToAct instanceof FirePokemon) {
+	                    if (moveName != null && !moveName.isEmpty()) {
+	                        if (power != -1) {
+	                            ((FirePokemon) pokemonToAct).attack(moveName, power);
+	                        } else {
+	                            ((FirePokemon) pokemonToAct).attack(moveName);
+	                        }
+	                    }
+	                } else if (pokemonToAct instanceof GrassPokemon) {
+	                    if (moveName != null && !moveName.isEmpty()) {
+	                        if (power != -1) {
+	                            ((GrassPokemon) pokemonToAct).attack(moveName, power);
+	                        } else {
+	                            ((GrassPokemon) pokemonToAct).attack(moveName);
+	                        }
+	                    }
+	                } else if (pokemonToAct instanceof WaterPokemon) {
+	                    if (moveName != null && !moveName.isEmpty()) {
+	                        if (power != -1) {
+	                            ((WaterPokemon) pokemonToAct).attack(moveName, power);
+	                        } else {
+	                            ((WaterPokemon) pokemonToAct).attack(moveName);
+	                        }
+	                    }
+	                } else {
+	                    // Default attack for Pokemon class
+	                    if (moveName != null && !moveName.isEmpty()) {
+	                        if (power != -1) {
+	                            pokemonToAct.attack(moveName, power);
+	                        } else {
+	                            pokemonToAct.attack(moveName);
+	                        }
+	                    }
+	                }
+	            } else if (action.equals("Heal")) {
+	                pokemonToAct.heal();
+	            }
+
+	            // Update the display
+	            displayPokemon();
+	        } else {
+	            JOptionPane.showMessageDialog(null, "No Pokemon found with the name: " + name, "Pokemon not found", JOptionPane.INFORMATION_MESSAGE);
+	        }
+	    }
+	}
+
+
+
 }

@@ -2,7 +2,7 @@ package com.pokemon.model;
 
 
 import java.io.Serializable;
-public class Pokemon implements Serializable {
+public class Pokemon implements Serializable, PokemonActions {
 	private static final long serialVersionUID = 1L;
     private String name;
     private String type;
@@ -47,6 +47,27 @@ public class Pokemon implements Serializable {
     public void setExperience(int experience) {
         this.experience = experience;
     }
+    
+    //interface methods
+    @Override
+    public void attack() {
+        System.out.println(getName() + " uses Default Attack!");
+    }
+    // Overloaded attack method with a different signature
+    public void attack(String moveName) {
+        System.out.println(getName() + " uses " + moveName + "!");
+    }
+
+    // Overloaded attack method with different parameters
+    public void attack(String moveName, int power) {
+        System.out.println(getName() + " uses " + moveName + " with power " + power + "!");
+    }
+
+    @Override
+    public void heal() {
+        System.out.println(getName() + " uses Default Heal!");
+    }
+    
     
     @Override
     public String toString() {

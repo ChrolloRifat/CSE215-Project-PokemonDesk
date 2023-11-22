@@ -13,10 +13,26 @@ public class WaterPokemon extends Pokemon {
         this.habitat = habitat;
     }
 
-//    @Override
-//    public void attack() {
-//        System.out.println("Uses Hydro Pump!");
-//    }
+    @Override
+    public void attack() {
+        System.out.println("Water Pokemon " + getName() + " uses Hydro-cannon!");
+    }
+
+    // Overloaded attack method with a different signature
+    public void attack(String moveName) {
+        System.out.println(getName() + " uses " + moveName + "!");
+    }
+
+    // Overloaded attack method with different parameters
+    public void attack(String moveName, int power) {
+        System.out.println(getName() + " uses " + moveName + " with power " + power + "!");
+    }
+    
+    @Override
+    public void heal() {
+        System.out.println("Water Pokemon " + getName() + " uses Water-droplet Heal!");
+    }
+
 
     public String getAbility() {
         return ability;

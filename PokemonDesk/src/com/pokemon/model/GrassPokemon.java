@@ -28,6 +28,26 @@ public class GrassPokemon extends Pokemon {
     public void setHabitat(String habitat) {
         this.habitat = habitat;
     }
+    
+    @Override
+    public void attack() {
+        System.out.println("Grass Pokemon " + getName() + " uses Grass-woven Whip!");
+    }
+    
+    // Overloaded attack method with a different signature
+    public void attack(String moveName) {
+        System.out.println(getName() + " uses " + moveName + "!");
+    }
+
+    // Overloaded attack method with different parameters
+    public void attack(String moveName, int power) {
+        System.out.println(getName() + " uses " + moveName + " with power " + power + "!");
+    }
+
+    @Override
+    public void heal() {
+        System.out.println("Grass Pokemon " + getName() + " uses Grass-Shield Heal!");
+    }
 
     @Override
     public String toString() {
