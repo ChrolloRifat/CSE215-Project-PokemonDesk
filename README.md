@@ -1,154 +1,34 @@
-# CSE215-Project-PokemonDesk
-##Introduction
+# Pokemon Desk App
 
-The Pokemon Desk project is a Java application designed to manage and interact with a collection of Pokemon entities. The project incorporates a graphical user interface (GUI) for ease of use, allowing users to display, add, search, edit, and delete Pokemon records. Additionally, the application supports Pokemon actions such as attack and heal.
-Methodology
+## Introduction
 
-The project is structured around several Java classes representing different aspects of Pokemon, including a base Pokemon class and subclasses (FirePokemon, GrassPokemon, and WaterPokemon) that demonstrate polymorphism. The GUI is implemented using Swing, providing a user-friendly interface to interact with the Pokemon data. File handling utilities are incorporated to persist data between program runs.
+The **Pokemon Desk App** is a Java-based desktop application that allows users to manage and interact with a collection of Pokemon. The application provides features for adding, searching, editing, and deleting Pokemon, as well as performing actions like attacking and healing.
 
-##Class UML Diagram
+## Methodology
+
+The application is built using Java and Swing for the graphical user interface (GUI). It employs a modular and object-oriented design, allowing for easy extension and maintenance. The project is organized into several packages, each responsible for specific functionalities.
+
+## Class UML Diagram
+
+![A UML Diagram](UML_Diagram.drawio.png)
 
 
-+-----------------------------------------+
-|                 Pokemon                 |
-+-----------------------------------------+
-| -name: String                           |
-| -type: String                           |
-| -level: int                             |
-| -experience: int                        |
-+-----------------------------------------+
-| +Pokemon(name: String, type: String,    |
-|    level: int, experience: int)         |
-| +getName(): String                      |
-| +getType(): String                      |
-| +getLevel(): int                        |
-| +getExperience(): int                   |
-| +setName(name: String): void            |
-| +setType(type: String): void            |
-| +setLevel(level: int): void             |
-| +setExperience(experience: int): void   |
-| +attack(): void                         |
-| +attack(moveName: String): void         |
-| +attack(moveName: String, power: int): void|
-| +heal(): void                           |
-| +toString(): String                     |
-+-----------------------------------------+
+The diagram illustrates the relationships between the `Pokemon`, `FirePokemon`, `WaterPokemon`, and `GrassPokemon` classes. `FirePokemon`, `WaterPokemon`, and `GrassPokemon` inherit from the base `Pokemon` class, and each has additional attributes and methods.
 
-+-----------------------------+
-|         FirePokemon         |
-+-----------------------------+
-| -ability: String            |
-| -weakness: String            |
-+-----------------------------+
-| +FirePokemon(name: String,  |
-|    type: String, level: int, |
-|    experience: int, ability: |
-|    String, weakness: String) |
-| +getAbility(): String        |
-| +setAbility(ability: String):void|
-| +getWeakness(): String       |
-| +setWeakness(weakness: String): void|
-| +attack(): void              |
-| +attack(moveName: String): void|
-| +attack(moveName: String,    |
-|    power: int): void         |
-| +heal(): void                |
-| +toString(): String          |
-+-----------------------------+
+The `Pokemon` class implements the `PokemonActions` interface, ensuring a common set of actions across all Pokemon.
 
-+-----------------------------+
-|        GrassPokemon         |
-+-----------------------------+
-| -nature: String             |
-| -habitat: String            |
-+-----------------------------+
-| +GrassPokemon(name: String, |
-|    type: String, level: int, |
-|    experience: int, nature:  |
-|    String, habitat: String)  |
-| +getNature(): String         |
-| +setNature(nature: String): void|
-| +getHabitat(): String        |
-| +setHabitat(habitat: String): void|
-| +attack(): void              |
-| +attack(moveName: String): void|
-| +attack(moveName: String,    |
-|    power: int): void         |
-| +heal(): void                |
-| +toString(): String          |
-+-----------------------------+
+## Uses
 
-+-----------------------------+
-|        WaterPokemon         |
-+-----------------------------+
-| -ability: String            |
-| -habitat: String            |
-+-----------------------------+
-| +WaterPokemon(name: String, |
-|    type: String, level: int, |
-|    experience: int, ability: |
-|    String, habitat: String)  |
-| +getAbility(): String        |
-| +setAbility(ability: String): void|
-| +getHabitat(): String        |
-| +setHabitat(habitat: String): void|
-| +attack(): void              |
-| +attack(moveName: String): void|
-| +attack(moveName: String,    |
-|    power: int): void         |
-| +heal(): void                |
-| +toString(): String          |
-+-----------------------------+
+The Pokemon Desk App can be used to:
 
-+-------------------------------+
-|         PokemonActions         |
-+-------------------------------+
-| +attack(): void               |
-| +attack(moveName: String): void|
-| +attack(moveName: String,      |
-|    power: int): void           |
-| +heal(): void                 |
-+-------------------------------+
+- **Display Pokemon:** View a list of all Pokemon with relevant details.
+- **Add Pokemon:** Add new Pokemon to the collection.
+- **Search Pokemon:** Find and display information about a specific Pokemon.
+- **Edit Pokemon:** Modify the details of an existing Pokemon.
+- **Delete Pokemon:** Remove a Pokemon from the collection.
+- **Attack and Heal:** Perform actions such as attacking and healing for each Pokemon.
 
-+----------------------------------+
-|          PokemonFactory          |
-+----------------------------------+
-| +createPokemon(name: String,     |
-|    type: String, level: int,      |
-|    experience: int, subtype1:     |
-|    String, subtype2: String): Pokemon|
-+----------------------------------+
+## Conclusion
 
-+--------------------------------+
-|          FileHandler             |
-+--------------------------------+
-| -FILE_NAME: String               |
-+--------------------------------+
-| +writeToFile(pokemonList: List<Pokemon>): void|
-| +readFromFile(): List<Pokemon>   |
-| -handleFileReadException(e: Exception): void|
-+--------------------------------+
+The Pokemon Desk App provides a user-friendly interface for managing and interacting with Pokemon. Its modular design allows for easy expansion and customization. The application leverages Java's object-oriented features to create a flexible and extensible system.
 
-##Uses
-
-The Pokemon Desk application serves as a tool for managing a collection of Pokemon records. Users can:
-
-    Display Pokemon: View a list of Pokemon with details such as name, type, level, experience, and additional information based on the Pokemon's subtype.
-
-    Add Pokemon: Add new Pokemon with attributes such as name, type, level, experience, and subtype details.
-
-    Search Pokemon: Find and display information about a specific Pokemon by entering its name.
-
-    Edit Pokemon: Modify existing Pokemon attributes, including name, type, level, experience, and subtype details.
-
-    Delete Pokemon: Remove a Pokemon record from the collection.
-
-    Attack and Heal: Perform actions on a selected Pokemon, such as attacking or healing.
-
-##Conclusion
-
-The Pokemon Desk project successfully implements a user-friendly GUI for managing Pokemon records. It leverages object-oriented principles such as polymorphism and encapsulation, enhancing code modularity and maintainability. The project provides a foundation for further expansion, such as adding new Pokemon types or actions.
-
-The use of a file handler ensures data persistence, allowing users to maintain a consistent Pokemon collection across different program executions. The class UML diagram provides a visual representation of the relationships between the classes, highlighting the project's structure and design.
-
-In summary, the Pokemon Desk project showcases the effective application of Java programming principles to create a practical and interactive desktop application for Pokemon enthusiasts.
