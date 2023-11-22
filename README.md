@@ -10,7 +10,7 @@ The application is built using Java and Swing for the graphical user interface (
 
 ## Class UML Diagram
 
-![A UML Diagram](UML_Diagram.drawio.png)
+![A UML Diagram](UML_Diagram.png)
 
 
 The diagram illustrates the relationships between the `Pokemon`, `FirePokemon`, `WaterPokemon`, and `GrassPokemon` classes. `FirePokemon`, `WaterPokemon`, and `GrassPokemon` inherit from the base `Pokemon` class, and each has additional attributes and methods.
